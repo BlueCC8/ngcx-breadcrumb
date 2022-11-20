@@ -1,0 +1,44 @@
+<div *ngIf="showBreadcrumb">
+  <div class="navigation-container">
+    <span (click)="navigateBack()" class="back-btn mx-1">
+      <mat-icon class="icon">arrow_left</mat-icon>
+      <span class="navigation-link">Back</span>
+    </span>
+    <div class="route">
+      <span (click)="routeTo(homeRoute)" class="nav-text navigation-link">
+        <mat-icon class="icon">home</mat-icon>
+      </span>
+
+      <span class="breadcrumb-container" *ngFor="let breadcrumb of breadcrumbs">
+        <span class="breadcrumb-container" *ngIf="breadcrumb.show">
+          <mat-icon class="icon">arrow_right</mat-icon>
+          <span
+            *ngIf="!breadcrumb.isLast; else lastBreadcrumb"
+            (click)="routeTo(breadcrumb.absoluteRoute, breadcrumb.type)"
+            class="navigation-link"
+            >{{
+              isMobile && breadcrumb.shortTitle
+                ? breadcrumb.shortTitle
+                : breadcrumb.title
+            }}
+            <span *ngIf="breadcrumb.subTitle">
+              - {{ breadcrumb.subTitle }}
+            </span>
+          </span>
+          <ng-template #lastBreadcrumb>
+            <span
+              >{{
+                isMobile && breadcrumb.shortTitle
+                  ? breadcrumb.shortTitle
+                  : breadcrumb.title
+              }}
+              <span *ngIf="breadcrumb.subTitle">
+                - {{ breadcrumb.subtitle }}
+              </span></span
+            >
+          </ng-template>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+.navigation-container,
+.route {
+  display: flex;
+  flex-direction: row;
+}
+
+.back-btn {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.breadcrumb-container {
+  display: flex;
+  flex-direction: row;
+}
+.text {
+  text-decoration: underline;
+}
+
+.navigation-container {
+  margin: 1rem;
+}
+.icon {
+  height: 20px;
+  line-height: 0.8;
+}
+
+.navigation-link {
+  text-decoration: underline;
+  cursor: pointer;
+}
