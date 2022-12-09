@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Breadcrumb } from './models/breadcrumb';
-import { BreadcrumbType } from './models/breadcrumb-type';
 import { PageInfo } from './models/page-info';
 import { PageUpdate } from './models/page-update';
 

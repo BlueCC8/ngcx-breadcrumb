@@ -28,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
       breadcrumbs: [
         {
           name: 'freight-exchange',
-          title: 'SHARED.SECTION-TITLE-FREIGHT-EXCHANGE',
+          title: 'freightExchange',
           route: 'freight-exchange',
           absoluteRoute: 'secure/freight-exchange',
           type: BreadcrumbType.Static,
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
         },
         {
           name: 'order-list',
-          title: 'SHARED.SECTION-TITLE-ORDER-LIST',
+          title: 'orderList',
           route: 'order-list',
           absoluteRoute: 'secure/order-list',
           type: BreadcrumbType.Static,
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
             //*Order matters
             {
               name: this.idWildcard,
-              title: 'ORDER-LIST-DETAILS.TRANSPORT-INFORMATION-ORDER',
+              title: 'orderList',
               subTitle: '',
               route: 'order-list',
               absoluteRoute: 'secure/order-list',
@@ -56,14 +56,13 @@ export class AppComponent implements OnInit, OnDestroy {
               breadcrumbs: [
                 {
                   name: 'transport',
-                  title: 'SHARED.SECTION-TITLE-TRANSPORT',
+                  title: 'Transport Info',
                   route: 'transport',
                   shortTitle: 'TI',
                   absoluteRoute: `secure/order-list/${this.idWildcard}/transport`,
                   type: BreadcrumbType.Static,
                   show: true,
                   breadcrumbs: null,
-                  // isLast: true,
                 },
               ],
             },

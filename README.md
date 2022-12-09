@@ -6,18 +6,28 @@ Stackblitz example:
 
 ## Table of Contents
 
-* [Features](#features)
-* [Installation](#installation)
-* [Usage](#usage)
-* [API](#api)
+- [ngcx-breadcrumb](#ngcx-breadcrumb)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Limitations](#limitations)
+  - [Usage](#usage)
+    - [Required fields](#required-fields)
+    - [Html file usage](#html-file-usage)
+  - [API](#api)
+    - [Breadcrumb core objects \& enums](#breadcrumb-core-objects--enums)
+    - [BreadcrumbService](#breadcrumbservice)
+      - [Objects](#objects)
+      - [Properties](#properties)
+      - [Methods](#methods)
 
 ## Features
 
-* Multiple type of titles available
-* Conditional show of the entire breadcrumb
-* Conditional show of the specific breadcrumb
-* Show of the dynamic generated pages (details pages with id)
-* Conditional navigation according to rules specified
+- Multiple type of titles available
+- Conditional show of the entire breadcrumb
+- Conditional show of the specific breadcrumb
+- Show of the dynamic generated pages (details pages with id)
+- Conditional navigation according to rules specified
 
 ## Installation
 
@@ -29,21 +39,164 @@ npm install ngcx-breadcrumb --save
 
 Choose the version corresponding to your Angular version:
 
- Angular       | ngcx-breadcrumb
- ------------- | -------------------
- 10/11/12/13   | 13.x
- 9             | 9.x
- 8             | 8.x
- 7             | 7.x
- 6             | 6.x
- 5             | 5.x
- 4.3           | 4.x
- 2 to 4.2.x    | 2.x
+| Angular     | ngcx-breadcrumb       |
+| ----------- | --------------------- |
+| 10/11/12/13 | 13.x (available soon) |
+| 9           | 9.x                   |
+| 8           | 8.x (available soon)  |
+| 7           | 7.x (available soon)  |
+| 6           | 6.x (available soon)  |
+| 5           | 5.x (available soon)  |
+| 4.3         | 4.x (available soon)  |
+| 2 to 4.2.x  | 2.x (available soon)  |
+
+## Limitations
+
+- Only one wildcard for the ids
 
 ## Usage
 
+### Required fields
+
+- `homeRoute` : The route for the home page
+- `allBreadcrumbs` : All the breadcrumbs in an array of the type Breadcrumb
+- `isMobile` : Whether it currently a mobile resolution or not
+- `currentNavigatedUrl` : Usually the URL
+- `currentRoute` : The URL after redirects
+
+### Html file usage
+
+```html
+<ngcx-breadcrumb
+  [homeRoute]="homeRoute"
+  [allBreadcrumbs]="allBreadcrumbs"
+  [isMobile]="false"
+  [currentNavigatedUrl]="currentNavigatedUrl"
+  [currentRoute]="currentRoute"
+>
+</ngcx-breadcrumb>
+
+<router-outlet></router-outlet>
+```
+
 ## API
+
+### Breadcrumb core objects & enums
+
+1. `BreadcrumbType` - States the kind of the breadcrumb that can be used:
+
+   - `Static` : The route always stays the same, as a list page;
+   - `Dynamic` : The route changes; For Example in a details page the id is changed according to the item that was selected from a list page.
+
+2. `Breadcrumb` - The main object:
+   - `name` : Represents the name of the breadcrumb;
+   - `route` : Relative route of the current breadcrumb according to the current parent breadcrumb and sibling breadcrumbs (in the same breadcrumbs array);
+   - `absoluteRoute` : The full route of the breadcrumb that includes the dynamic fields also the wildcards for the ids if it's a dynamic type;
+   - `linkLast` : Whether it's the last breadcrumb to display or not the link
+   - `title` : The actual value that is going to be displayed. You may need to translate it first before setting the title value;
+   - `subTitle` : A value that is displayed along with the title separated by a dash
+   - `shortTitle` : The value that will be displayed only for the mobile resolutions
+   - `isId` : Marks a breadcrumb as a id breadcrumb
+   - `show` : Whether to show or not the breadcrumb when it reaches own route
+   - `showBreadcrumb` : If the URL has a valid breadcrumb the whole breadcrumb is displayed
+   - `type` : Indicated whether it is static or dynamic
+   - `breadcrumbs` : Child breadcrumbs of the current breadcrumbs
+
+Values by default:
+
+```typescript
+export class Breadcrumb {
+  name: string;
+  route: string;
+  absoluteRoute: string;
+  linkLast? = false;
+  title: string;
+  subTitle?: string;
+  shortTitle?: string;
+  isId? = false;
+  show? = false;
+  showBreadcrumb? = false;
+  type: BreadcrumbType = BreadcrumbType.Static;
+  breadcrumbs: Breadcrumb[] = [];
+}
+```
+
+Example:
+
+```typescript
+
+  public readonly allBreadcrumbs: Breadcrumb[] = [
+    {
+      name: 'secure',
+      title: '',
+      route: 'secure',
+      absoluteRoute: 'secure',
+      type: BreadcrumbType.Static,
+      breadcrumbs: [
+        {
+          name: 'freight-exchange',
+          title: 'freightExchange',
+          route: 'freight-exchange',
+          absoluteRoute: 'secure/freight-exchange',
+          type: BreadcrumbType.Static,
+          breadcrumbs: null,
+        },
+        {
+          name: 'order-list',
+          title: 'orderList',
+          route: 'order-list',
+          absoluteRoute: 'secure/order-list',
+          type: BreadcrumbType.Static,
+          show: true,
+          breadcrumbs: [
+            //*Order matters
+            {
+              name: this.idWildcard,
+              title: 'orderList',
+              subTitle: '',
+              route: 'order-list',
+              absoluteRoute: 'secure/order-list',
+              isId: true,
+              type: BreadcrumbType.Dynamic,
+              show: true,
+              showBreadcrumb: true,
+              breadcrumbs: [
+                {
+                  name: 'transport',
+                  title: 'Transport Info',
+                  route: 'transport',
+                  shortTitle: 'TI',
+                  absoluteRoute: `secure/order-list/${this.idWildcard}/transport`,
+                  type: BreadcrumbType.Static,
+                  show: true,
+                  breadcrumbs: null,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ];
+```
 
 ### BreadcrumbService
 
+#### Objects
+
+- `PageInfo` : Holds information on:
+  - `id` - the actual id of the page;
+  - `viewId` - the dynamic id that should be displayed if it's provided;
+- `PageUpdate` : Hold information on:
+  - `route` - the relative route that should be used to navigate `this.router.navigate([route])`;
+  - `isLogout` - to be used to check if a the route is for a logout.
+
 #### Properties
+
+- `pageInfoSubject$` : Observable used to communicate data about the page information (id, viewId). If the viewId is set it will be displayed instead of the Id. The case when a custom id should be displayed.
+- `pageChangeSubject$` : Observable used to communicate data about the `route` and `isLogout`.
+
+#### Methods
+
+- `updatePageInfo` : Updates the data about the current page
+- `updatePage` : Updates the route data

@@ -4,7 +4,7 @@ export class Breadcrumb {
   name: string;
   route: string;
   absoluteRoute: string;
-  isLast? = false;
+  linkLast? = false;
   title: string;
   subTitle?: string;
   shortTitle?: string;

@@ -13,7 +13,7 @@
         <span class="breadcrumb-container" *ngIf="breadcrumb.show">
           <mat-icon class="icon">arrow_right</mat-icon>
           <span
-            *ngIf="!breadcrumb.isLast; else lastBreadcrumb"
+            *ngIf="!breadcrumb.linkLast; else lastBreadcrumb"
             (click)="routeTo(breadcrumb.absoluteRoute, breadcrumb.type)"
             class="navigation-link"
             >{{
