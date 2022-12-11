@@ -12,5 +12,6 @@ export class Breadcrumb {
   show? = false;
   showBreadcrumb? = false;
   type: BreadcrumbType = BreadcrumbType.Static;
+  wildCards?: string[] = [];
   breadcrumbs: Breadcrumb[] = [];
 }

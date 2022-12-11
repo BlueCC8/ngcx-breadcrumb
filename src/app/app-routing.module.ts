@@ -5,6 +5,7 @@ import { FreightExchangeComponent } from './freight-exchange/freight-exchange.co
 import { OrderListDetailsComponent } from './order/order-list-details/order-list-details.component';
 import { OrderListComponent } from './order/order-list/order-list.component';
 import { TransportInformationComponent } from './transport-information/transport-information.component';
+import { VehicleInformationComponent } from './vehicle-information/vehicle-information.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,16 @@ const routes: Routes = [
             component: OrderListComponent,
           },
           { path: ':id', component: OrderListDetailsComponent },
-          { path: ':id/transport', component: TransportInformationComponent },
+          {
+            path: ':id/transport',
+            children: [
+              {
+                path: '',
+                component: TransportInformationComponent,
+              },
+              { path: ':vehicleId', component: VehicleInformationComponent },
+            ],
+          },
         ],
       },
     ],

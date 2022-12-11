@@ -16,16 +16,22 @@ export class OrderListDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
-    const pageInfo = {
-      id: null,
-    };
+    const pageInfo = [
+      {
+        id: null,
+        wildCard: 'id',
+      },
+    ];
     this.breadcrumbService.updatePageInfo(pageInfo);
   }
 
   ngOnInit(): void {
-    const pageInfo = {
-      id: '1',
-    };
+    const pageInfo = [
+      {
+        id: '1',
+        wildCard: 'id',
+      },
+    ];
     this.breadcrumbService.updatePageInfo(pageInfo);
 
     this.breadcrumbService.pageChangeSubject$.subscribe((page) => {

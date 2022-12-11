@@ -10,6 +10,7 @@ import { OrderListDetailsComponent } from './order/order-list-details/order-list
 import { OrderListComponent } from './order/order-list/order-list.component';
 import { TransportInformationComponent } from './transport-information/transport-information.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { VehicleInformationComponent } from './vehicle-information/vehicle-information.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     OrderListComponent,
     OrderListDetailsComponent,
     TransportInformationComponent,
+    VehicleInformationComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

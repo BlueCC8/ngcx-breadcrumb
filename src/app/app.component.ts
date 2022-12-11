@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'appForBreadcrumb';
   public idWildcard = 'id';
+  public vehicleIdWildcard = 'vehicleId';
   public homeRoute = 'secure/dashboard';
   private subs: Subscription[] = [];
   public currentNavigatedUrl = '';
@@ -48,7 +49,9 @@ export class AppComponent implements OnInit, OnDestroy {
               title: 'orderList',
               subTitle: '',
               route: 'order-list',
-              absoluteRoute: 'secure/order-list',
+              absoluteRoute: `secure/order-list/${this.idWildcard}`,
+              //*Order matters
+              wildCards: [this.idWildcard],
               isId: true,
               type: BreadcrumbType.Dynamic,
               show: true,
@@ -59,10 +62,22 @@ export class AppComponent implements OnInit, OnDestroy {
                   title: 'Transport Info',
                   route: 'transport',
                   shortTitle: 'TI',
+                  wildCards: [this.idWildcard],
                   absoluteRoute: `secure/order-list/${this.idWildcard}/transport`,
                   type: BreadcrumbType.Static,
                   show: true,
-                  breadcrumbs: null,
+                  breadcrumbs: [
+                    {
+                      name: 'vehicle',
+                      title: 'Vehicle Info',
+                      route: 'vehicle',
+                      wildCards: [this.idWildcard, this.vehicleIdWildcard],
+                      absoluteRoute: `secure/order-list/${this.idWildcard}/transport/${this.vehicleIdWildcard}`,
+                      type: BreadcrumbType.Dynamic,
+                      show: true,
+                      breadcrumbs: null,
+                    },
+                  ],
                 },
               ],
             },
