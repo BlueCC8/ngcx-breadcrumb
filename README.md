@@ -14,6 +14,8 @@ Stackblitz example:
   - [Usage](#usage)
     - [Required fields](#required-fields)
     - [Html file usage](#html-file-usage)
+    - [App module registration](#app-module-registration)
+    - [Important remarks](#important-remarks)
   - [API](#api)
     - [Breadcrumb core objects \& enums](#breadcrumb-core-objects--enums)
     - [BreadcrumbService](#breadcrumbservice)
@@ -77,6 +79,59 @@ Choose the version corresponding to your Angular version:
 </ngcx-breadcrumb>
 
 <router-outlet></router-outlet>
+```
+
+### App module registration
+
+Import statically the module
+
+```typescript
+ imports: [
+    BrowserModule,
+    AppRoutingModule,
+    NgcxBreadcrumbModule.forRoot(),
+    BrowserAnimationsModule,
+  ]
+
+```
+
+### Important remarks
+
+1. Make sure to use the lifecycles ngOnInit and ngOnDestroy when navigating
+```typescript
+ ngOnDestroy(): void {
+    const pageInfo = [
+      {
+        id: null,
+        wildCard: 'id',
+      },
+    ];
+    this.breadcrumbService.updatePageInfo(pageInfo);
+  }
+
+  ngOnInit(): void {
+    const pageInfo = [
+      {
+        id: '1',
+        wildCard: 'id',
+      },
+    ];
+    this.breadcrumbService.updatePageInfo(pageInfo);
+
+    this.breadcrumbService.pageChangeSubject$.subscribe((page) => {
+      if (page === null) {
+        this.navigateBack();
+      } else {
+        this.routeTo(page);
+      }
+    });
+  }
+  public navigateBack() {
+    this.location.back();
+  }
+  public routeTo(update: PageUpdate): void {
+    this.router.navigate([update.route]);
+  }
 ```
 
 ## API
@@ -155,7 +210,9 @@ Example:
               title: 'orderList',
               subTitle: '',
               route: 'order-list',
-              absoluteRoute: 'secure/order-list',
+              absoluteRoute: `secure/order-list/${this.idWildcard}`,
+              //*Order matters
+              wildCards: [this.idWildcard],
               isId: true,
               type: BreadcrumbType.Dynamic,
               show: true,
@@ -166,10 +223,22 @@ Example:
                   title: 'Transport Info',
                   route: 'transport',
                   shortTitle: 'TI',
+                  wildCards: [this.idWildcard],
                   absoluteRoute: `secure/order-list/${this.idWildcard}/transport`,
                   type: BreadcrumbType.Static,
                   show: true,
-                  breadcrumbs: null,
+                  breadcrumbs: [
+                    {
+                      name: 'vehicle',
+                      title: 'Vehicle Info',
+                      route: 'vehicle',
+                      wildCards: [this.idWildcard, this.vehicleIdWildcard],
+                      absoluteRoute: `secure/order-list/${this.idWildcard}/transport/${this.vehicleIdWildcard}`,
+                      type: BreadcrumbType.Dynamic,
+                      show: true,
+                      breadcrumbs: null,
+                    },
+                  ],
                 },
               ],
             },

@@ -14,24 +14,24 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'appForBreadcrumb';
   public idWildcard = 'id';
   public vehicleIdWildcard = 'vehicleId';
-  public homeRoute = 'secure/dashboard';
+  public homeRoute = 'main/dashboard';
   private subs: Subscription[] = [];
   public currentNavigatedUrl = '';
   public currentRoute = '';
 
   public readonly allBreadcrumbs: Breadcrumb[] = [
     {
-      name: 'secure',
+      name: 'main',
       title: '',
-      route: 'secure',
-      absoluteRoute: 'secure',
+      route: 'main',
+      absoluteRoute: 'main',
       type: BreadcrumbType.Static,
       breadcrumbs: [
         {
-          name: 'freight-exchange',
-          title: 'freightExchange',
-          route: 'freight-exchange',
-          absoluteRoute: 'secure/freight-exchange',
+          name: 'reports-list',
+          title: 'reportsList',
+          route: 'reports-list',
+          absoluteRoute: 'main/reports-list',
           type: BreadcrumbType.Static,
           breadcrumbs: null,
         },
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
           name: 'order-list',
           title: 'orderList',
           route: 'order-list',
-          absoluteRoute: 'secure/order-list',
+          absoluteRoute: 'main/order-list',
           type: BreadcrumbType.Static,
           show: true,
           breadcrumbs: [
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
               title: 'orderList',
               subTitle: '',
               route: 'order-list',
-              absoluteRoute: `secure/order-list/${this.idWildcard}`,
+              absoluteRoute: `main/order-list/${this.idWildcard}`,
               //*Order matters
               wildCards: [this.idWildcard],
               isId: true,
@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
                   route: 'transport',
                   shortTitle: 'TI',
                   wildCards: [this.idWildcard],
-                  absoluteRoute: `secure/order-list/${this.idWildcard}/transport`,
+                  absoluteRoute: `main/order-list/${this.idWildcard}/transport`,
                   type: BreadcrumbType.Static,
                   show: true,
                   breadcrumbs: [
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit, OnDestroy {
                       title: 'Vehicle Info',
                       route: 'vehicle',
                       wildCards: [this.idWildcard, this.vehicleIdWildcard],
-                      absoluteRoute: `secure/order-list/${this.idWildcard}/transport/${this.vehicleIdWildcard}`,
+                      absoluteRoute: `main/order-list/${this.idWildcard}/transport/${this.vehicleIdWildcard}`,
                       type: BreadcrumbType.Dynamic,
                       show: true,
                       breadcrumbs: null,

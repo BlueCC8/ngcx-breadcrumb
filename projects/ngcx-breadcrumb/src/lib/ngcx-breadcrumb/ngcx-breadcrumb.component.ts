@@ -24,16 +24,13 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
   @Input() homeRoute = '#';
   @Input() allBreadcrumbs: Breadcrumb[] = [];
   @Input() idWildCards: string[] = [];
-  @Input() currentNavigatedUrl: string;
+  @Input() currentNavigatedUrl: string = '';
   @Input() currentRoute = '';
 
   breadcrumbs: Breadcrumb[] = [];
   private fragments;
   private currentBreadcrumb: Breadcrumb;
   private subs: Subscription[] = [];
-  // private lastDetailIndex;
-
-  private absoluteRoute = '';
 
   private allWildCards: Map<string, string> = new Map();
 
@@ -52,7 +49,6 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.push(
       this.breadcrumbService.pageInfoSubject$.subscribe((pageInfo) => {
-        console.warn('Creating the breadcrumbs');
         this.breadcrumbs = [];
         this.fragments = this.currentNavigatedUrl.split('/');
         //* Consume the empty path
@@ -100,7 +96,6 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
           }
           this.breadcrumbs.shift();
         }
-        console.warn('Done the breadcrumbs');
       })
     );
   }
@@ -115,10 +110,6 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
       (breadcrumb) => breadcrumb.route === this.fragments[0]
     );
 
-    // if (!pageInfo.id) {
-    //   //* Don't do anything because details don't matter now
-    //   return false;
-    // }
     if (moduleFragmentIndex === -1) {
       const detailBreadcrumb = moduleBreadcrumbs[0];
 
