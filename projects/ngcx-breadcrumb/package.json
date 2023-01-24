@@ -1,6 +1,21 @@
 {
   "name": "ngcx-breadcrumb",
+  "description": "The breadcrumb library for Angular",
   "version": "0.0.1",
+  "keywords": [
+    "angular",
+    "breadcrumb"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/BlueCC8/ngcx-breadcrumb",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlueCC8/ngcx-breadcrumb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BlueCC8/ngcx-breadcrumb/issues"
+  },
+  "author": "Cristian Cernat <cristian.cernat97@gmail.com>",
   "peerDependencies": {
     "@angular/common": "^9.1.13",
     "@angular/core": "^9.1.13",

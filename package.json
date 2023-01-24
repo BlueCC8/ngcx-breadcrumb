@@ -1,6 +1,5 @@
 {
-  "name": "app-for-breadcrumb",
-  "version": "0.0.0",
+  "name": "ngcx-breadcrumb-app",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

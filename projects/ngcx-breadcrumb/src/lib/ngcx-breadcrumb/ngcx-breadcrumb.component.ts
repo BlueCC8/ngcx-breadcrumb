@@ -23,15 +23,16 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
   @Input() isMobile = false;
   @Input() homeRoute = '#';
   @Input() allBreadcrumbs: Breadcrumb[] = [];
-  @Input() idWildCard = 'id';
-  @Input() currentNavigatedUrl: string;
-  @Input() currentRoute = '';
+  @Input() idWildCards: string[] = [];
+  @Input() currentNavigatedUrl: string = '';
 
   breadcrumbs: Breadcrumb[] = [];
   private fragments;
   private currentBreadcrumb: Breadcrumb;
   private subs: Subscription[] = [];
-  private lastDetailIndex;
+
+  private allWildCards: Map<string, string> = new Map();
+
   constructor(
     private breadcrumbService: NgcxBreadcrumbService,
     private router: Router
@@ -47,7 +48,6 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subs.push(
       this.breadcrumbService.pageInfoSubject$.subscribe((pageInfo) => {
-        console.warn('Creating the breadcrumbs');
         this.breadcrumbs = [];
         this.fragments = this.currentNavigatedUrl.split('/');
         //* Consume the empty path
@@ -77,12 +77,16 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
                 this.fragments.shift();
                 continue;
               }
+              if (moduleBreadcrumb.wildCards) {
+                moduleBreadcrumb.wildCards.forEach((el) => {
+                  moduleBreadcrumb.absoluteRoute =
+                    moduleBreadcrumb.absoluteRoute.replace(
+                      el,
+                      this.allWildCards.get(el)
+                    );
+                });
+              }
 
-              moduleBreadcrumb.absoluteRoute =
-                moduleBreadcrumb.absoluteRoute.replace(
-                  this.idWildCard,
-                  this.lastDetailIndex
-                );
               this.breadcrumbs.push(moduleBreadcrumb);
               this.currentBreadcrumb = { ...moduleBreadcrumb };
               //* Consume the  fragment
@@ -91,13 +95,12 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
           }
           this.breadcrumbs.shift();
         }
-        console.warn('Done the breadcrumbs');
       })
     );
   }
   private checkForDetailBreadcrumb(
     moduleBreadcrumbs: Breadcrumb[],
-    pageInfo: PageInfo
+    pageInfos: PageInfo[]
   ): boolean {
     if (moduleBreadcrumbs.length === 0) {
       return false;
@@ -105,17 +108,25 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
     const moduleFragmentIndex = moduleBreadcrumbs.findIndex(
       (breadcrumb) => breadcrumb.route === this.fragments[0]
     );
-    if (!pageInfo.id) {
-      //* Don't do anything because details don't matter now
-      return false;
-    }
+
     if (moduleFragmentIndex === -1) {
       const detailBreadcrumb = moduleBreadcrumbs[0];
-      detailBreadcrumb.subTitle = !!pageInfo.viewId
-        ? pageInfo.viewId
+
+      const currentWildCard = detailBreadcrumb.wildCards.shift();
+      const pieceInfo = pageInfos.find(
+        (pageInfo) => pageInfo.wildCard === currentWildCard
+      );
+      if (currentWildCard) {
+        this.allWildCards.set(currentWildCard, this.fragments[0]);
+        detailBreadcrumb.absoluteRoute = detailBreadcrumb.absoluteRoute.replace(
+          currentWildCard,
+          this.fragments[0]
+        );
+      }
+      detailBreadcrumb.subTitle = !!pieceInfo.viewId
+        ? pieceInfo.viewId
         : this.fragments[0];
-      detailBreadcrumb.absoluteRoute += `/${this.fragments[0]}`;
-      this.lastDetailIndex = this.fragments[0];
+
       this.fragments.shift();
       moduleBreadcrumbs.shift();
 

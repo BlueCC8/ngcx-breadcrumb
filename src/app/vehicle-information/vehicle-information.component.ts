@@ -2,14 +2,13 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgcxBreadcrumbService } from 'ngcx-breadcrumb';
-import { PageInfo } from 'projects/ngcx-breadcrumb/src/lib/models/page-info';
 import { PageUpdate } from 'projects/ngcx-breadcrumb/src/lib/models/page-update';
 
 @Component({
-  templateUrl: './transport-information.component.html',
-  styleUrls: ['./transport-information.component.scss'],
+  templateUrl: './vehicle-information.component.html',
+  styleUrls: ['./vehicle-information.component.scss'],
 })
-export class TransportInformationComponent implements OnInit, OnDestroy {
+export class VehicleInformationComponent implements OnInit, OnDestroy {
   constructor(
     private breadcrumbService: NgcxBreadcrumbService,
     private location: Location,
@@ -17,11 +16,12 @@ export class TransportInformationComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const pageInfo: PageInfo[] = [
+    const pageInfo = [
       {
         id: '1',
         wildCard: 'id',
       },
+      { id: '2', wildCard: 'vehicleId' },
     ];
     this.breadcrumbService.updatePageInfo(pageInfo);
     this.breadcrumbService.pageChangeSubject$.subscribe((page) => {
@@ -39,11 +39,12 @@ export class TransportInformationComponent implements OnInit, OnDestroy {
     this.router.navigate([update.route]);
   }
   ngOnDestroy(): void {
-    const pageInfo: PageInfo[] = [
+    const pageInfo = [
       {
-        id: null,
+        id: '1',
         wildCard: 'id',
       },
+      { id: null, wildCard: 'vehicleId' },
     ];
     this.breadcrumbService.updatePageInfo(pageInfo);
   }

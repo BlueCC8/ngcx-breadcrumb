@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { Breadcrumb } from 'projects/ngcx-breadcrumb/src/lib/models/breadcrumb';
 import { BreadcrumbType } from 'projects/ngcx-breadcrumb/src/lib/models/breadcrumb-type';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,24 +12,24 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'appForBreadcrumb';
   public idWildcard = 'id';
-  public homeRoute = 'secure/dashboard';
-  private subs: Subscription[] = [];
+  public vehicleIdWildcard = 'vehicleId';
+  public homeRoute = 'main/dashboard';
   public currentNavigatedUrl = '';
   public currentRoute = '';
 
   public readonly allBreadcrumbs: Breadcrumb[] = [
     {
-      name: 'secure',
+      name: 'main',
       title: '',
-      route: 'secure',
-      absoluteRoute: 'secure',
+      route: 'main',
+      absoluteRoute: 'main',
       type: BreadcrumbType.Static,
       breadcrumbs: [
         {
-          name: 'freight-exchange',
-          title: 'freightExchange',
-          route: 'freight-exchange',
-          absoluteRoute: 'secure/freight-exchange',
+          name: 'reports-list',
+          title: 'reportsList',
+          route: 'reports-list',
+          absoluteRoute: 'main/reports-list',
           type: BreadcrumbType.Static,
           breadcrumbs: null,
         },
@@ -38,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
           name: 'order-list',
           title: 'orderList',
           route: 'order-list',
-          absoluteRoute: 'secure/order-list',
+          absoluteRoute: 'main/order-list',
           type: BreadcrumbType.Static,
           show: true,
           breadcrumbs: [
@@ -48,7 +47,9 @@ export class AppComponent implements OnInit, OnDestroy {
               title: 'orderList',
               subTitle: '',
               route: 'order-list',
-              absoluteRoute: 'secure/order-list',
+              absoluteRoute: `main/order-list/${this.idWildcard}`,
+              //*Order matters
+              wildCards: [this.idWildcard],
               isId: true,
               type: BreadcrumbType.Dynamic,
               show: true,
@@ -59,10 +60,22 @@ export class AppComponent implements OnInit, OnDestroy {
                   title: 'Transport Info',
                   route: 'transport',
                   shortTitle: 'TI',
-                  absoluteRoute: `secure/order-list/${this.idWildcard}/transport`,
+                  wildCards: [this.idWildcard],
+                  absoluteRoute: `main/order-list/${this.idWildcard}/transport`,
                   type: BreadcrumbType.Static,
                   show: true,
-                  breadcrumbs: null,
+                  breadcrumbs: [
+                    {
+                      name: 'vehicle',
+                      title: 'Vehicle Info',
+                      route: 'vehicle',
+                      wildCards: [this.idWildcard, this.vehicleIdWildcard],
+                      absoluteRoute: `main/order-list/${this.idWildcard}/transport/${this.vehicleIdWildcard}`,
+                      type: BreadcrumbType.Dynamic,
+                      show: true,
+                      breadcrumbs: null,
+                    },
+                  ],
                 },
               ],
             },
@@ -78,7 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.currentNavigatedUrl = event.url;
-        this.currentRoute = event.urlAfterRedirects;
       }
     });
   }
