@@ -3,7 +3,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 import { Breadcrumb } from 'projects/ngcx-breadcrumb/src/lib/models/breadcrumb';
 import { BreadcrumbType } from 'projects/ngcx-breadcrumb/src/lib/models/breadcrumb-type';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +14,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public idWildcard = 'id';
   public vehicleIdWildcard = 'vehicleId';
   public homeRoute = 'main/dashboard';
-  private subs: Subscription[] = [];
   public currentNavigatedUrl = '';
   public currentRoute = '';
 
@@ -93,7 +91,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.currentNavigatedUrl = event.url;
-        this.currentRoute = event.urlAfterRedirects;
       }
     });
   }

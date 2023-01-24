@@ -17,6 +17,7 @@ Stackblitz example:
     - [App module registration](#app-module-registration)
     - [Important remarks](#important-remarks)
   - [API](#api)
+    - [Input](#input)
     - [Breadcrumb core objects \& enums](#breadcrumb-core-objects--enums)
     - [BreadcrumbService](#breadcrumbservice)
       - [Objects](#objects)
@@ -74,7 +75,6 @@ Choose the version corresponding to your Angular version:
   [allBreadcrumbs]="allBreadcrumbs"
   [isMobile]="false"
   [currentNavigatedUrl]="currentNavigatedUrl"
-  [currentRoute]="currentRoute"
 >
 </ngcx-breadcrumb>
 
@@ -135,6 +135,11 @@ Import statically the module
 ```
 
 ## API
+### Input
+1. `homeRoute` - The route for the home icon
+2. `isMobile` - If enabled the short title will be used
+3. `allBreadcrumbs` - The array of the Breadcrumb type which holds all the information about the breadcrumbs
+4. `currentNavigatedUrl` - The current URL usually the url from the event url of the NavigationEnd object
 
 ### Breadcrumb core objects & enums
 
@@ -180,19 +185,19 @@ Example:
 
 ```typescript
 
-  public readonly allBreadcrumbs: Breadcrumb[] = [
+   public readonly allBreadcrumbs: Breadcrumb[] = [
     {
-      name: 'secure',
+      name: 'main',
       title: '',
-      route: 'secure',
-      absoluteRoute: 'secure',
+      route: 'main',
+      absoluteRoute: 'main',
       type: BreadcrumbType.Static,
       breadcrumbs: [
         {
-          name: 'freight-exchange',
-          title: 'freightExchange',
-          route: 'freight-exchange',
-          absoluteRoute: 'secure/freight-exchange',
+          name: 'reports-list',
+          title: 'reportsList',
+          route: 'reports-list',
+          absoluteRoute: 'main/reports-list',
           type: BreadcrumbType.Static,
           breadcrumbs: null,
         },
@@ -200,7 +205,7 @@ Example:
           name: 'order-list',
           title: 'orderList',
           route: 'order-list',
-          absoluteRoute: 'secure/order-list',
+          absoluteRoute: 'main/order-list',
           type: BreadcrumbType.Static,
           show: true,
           breadcrumbs: [
@@ -210,7 +215,7 @@ Example:
               title: 'orderList',
               subTitle: '',
               route: 'order-list',
-              absoluteRoute: `secure/order-list/${this.idWildcard}`,
+              absoluteRoute: `main/order-list/${this.idWildcard}`,
               //*Order matters
               wildCards: [this.idWildcard],
               isId: true,
@@ -224,7 +229,7 @@ Example:
                   route: 'transport',
                   shortTitle: 'TI',
                   wildCards: [this.idWildcard],
-                  absoluteRoute: `secure/order-list/${this.idWildcard}/transport`,
+                  absoluteRoute: `main/order-list/${this.idWildcard}/transport`,
                   type: BreadcrumbType.Static,
                   show: true,
                   breadcrumbs: [
@@ -233,7 +238,7 @@ Example:
                       title: 'Vehicle Info',
                       route: 'vehicle',
                       wildCards: [this.idWildcard, this.vehicleIdWildcard],
-                      absoluteRoute: `secure/order-list/${this.idWildcard}/transport/${this.vehicleIdWildcard}`,
+                      absoluteRoute: `main/order-list/${this.idWildcard}/transport/${this.vehicleIdWildcard}`,
                       type: BreadcrumbType.Dynamic,
                       show: true,
                       breadcrumbs: null,

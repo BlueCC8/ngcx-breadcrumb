@@ -25,7 +25,6 @@ export class NgcxBreadcrumbComponent implements OnInit, OnDestroy {
   @Input() allBreadcrumbs: Breadcrumb[] = [];
   @Input() idWildCards: string[] = [];
   @Input() currentNavigatedUrl: string = '';
-  @Input() currentRoute = '';
 
   breadcrumbs: Breadcrumb[] = [];
   private fragments;
