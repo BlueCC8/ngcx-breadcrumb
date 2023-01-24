@@ -45,7 +45,7 @@ Choose the version corresponding to your Angular version:
 | Angular     | ngcx-breadcrumb       |
 | ----------- | --------------------- |
 | 10/11/12/13 | 13.x (available soon) |
-| 9           | 9.x                   |
+| 9           | 0.0.1                   |
 | 8           | 8.x (available soon)  |
 | 7           | 7.x (available soon)  |
 | 6           | 6.x (available soon)  |
